@@ -21,8 +21,8 @@ public class User {
      String userID;
      String username;
      String password;
-     String firstName;
-     String lastName;
+     String firstname;
+     String lastname;
      String email;
      LocalDate dob;
      @ManyToMany

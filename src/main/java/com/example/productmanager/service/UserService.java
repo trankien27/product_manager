@@ -30,7 +30,38 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-
 public class UserService {
+    UserRepository userRepository;
+    UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
+    public UserResponse createUser(UserCreationRequest request) {
+        if (userRepository.existsByUsername(request.getUsername()))
+            throw new AppException(ErrorCode.USER_EXISTED);
+
+        User user = userMapper.toUser(request);
+        HashSet<Role> roles = new HashSet<>();
+        roleRepository.findById("USER").ifPresent(roles::add);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(roles);
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toUserResponse).toList();
+    }
+    public UserResponse updateUser(String userId,UserUpdateRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        userMapper.updateUser(user,request);
+
+       return userMapper.toUserResponse(userRepository.save(user));
+
+    }
+    public String deleteUser(String userId) {
+        if(!userRepository.existsById(userId))
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        userRepository.deleteById(userId);
+        return "user was been deleted";
+    }
 }

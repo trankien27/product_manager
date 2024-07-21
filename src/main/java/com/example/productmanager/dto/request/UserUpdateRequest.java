@@ -12,12 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
-    private String password;
-    private String firstname;
-    private String lastname;
 
-    private LocalDate dob;
-    List<String> roles;
+     String firstname;
+     String lastname;
+     String email;
+     LocalDate dob;
 
 
 

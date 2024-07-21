@@ -20,6 +20,33 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
+    UserService userService;
+@PostMapping
+    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .build();
 
+}
+@GetMapping
+ApiResponse<List<UserResponse>> getUsers() {
+    return ApiResponse.<List<UserResponse>>builder()
+            .result(userService.getAllUsers())
+            .build();
+}
+
+@PutMapping("/{userId}")
+    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
+    return ApiResponse.<UserResponse>builder()
+            .result(userService.updateUser(userId,request))
+            .build();
+}
+@DeleteMapping("/{userId}")
+    ApiResponse<String> deleteUser(@PathVariable String userId) {
+    return ApiResponse.<String>builder()
+            .result(userService.deleteUser(userId))
+            .build()
+            ;
+}
 }
 

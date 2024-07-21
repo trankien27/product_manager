@@ -1,11 +1,14 @@
 package com.example.productmanager.dto.request;
 
+import com.example.productmanager.entity.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
@@ -19,7 +22,10 @@ public class UserCreationRequest {
      String password;
      String firstname;
     String lastname;
+    String email;
 //    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDate dob;
 
+    @ManyToMany
+    Set<Role> roles ;
 }

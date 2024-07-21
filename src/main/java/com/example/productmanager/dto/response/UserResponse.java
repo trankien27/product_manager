@@ -16,8 +16,8 @@ import java.util.Set;
 public class UserResponse {
      String userID;
      String username;
-     String firstName;
-     String lastName;
+     String firstname;
+     String lastname;
      String email;
      LocalDate dob;
      @ManyToMany
