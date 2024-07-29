@@ -1,6 +1,6 @@
 package com.example.productmanager.mapper;
 
-import ch.qos.logback.core.model.ComponentModel;
+
 import com.example.productmanager.dto.request.UserCreationRequest;
 import com.example.productmanager.dto.request.UserUpdateRequest;
 import com.example.productmanager.dto.response.UserResponse;
@@ -11,10 +11,10 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    @Mapping(target = "roles", ignore = true)
-    User toUser(UserCreationRequest request);
-    //    User toUser(UserUpdateRequest request);\
-    @Mapping(target = "roles", ignore = true)
-    void updateUser(@MappingTarget User user, UserUpdateRequest request);
-    UserResponse toUserResponse(User user);
+        @Mapping(target = "roles", ignore = true)
+        User toUser(UserCreationRequest request);
+        //    User toUser(UserUpdateRequest request);\
+        @Mapping(target = "roles", ignore = true)
+        void updateUser(@MappingTarget User user, UserUpdateRequest request);
+        UserResponse toUserResponse(User user);
 }

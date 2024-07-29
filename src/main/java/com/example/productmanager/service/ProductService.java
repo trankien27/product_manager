@@ -13,6 +13,7 @@ import com.example.productmanager.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class ProductService {
     ProductRepository productRepository;
     ProductMapper productMapper;
     private final ProductMapperImpl productMapperImpl;
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsProductByProductName(request.getProductName()))
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
@@ -36,14 +37,20 @@ public class ProductService {
         return productMapper.toProductResponse(productRepository.save(product));
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse updateProduct(ProductUpdateRequest request,String productId) {
         Product product = productRepository.findByProductId(productId).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
         productMapper.updateProduct(product,request);
         return productMapper.toProductResponse(productRepository.save(product));
     }
+
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
     }
+    public ProductResponse getProduct(String productId) {
+        return productMapper.toProductResponse(productRepository.findByProductId(productId).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct(String productId) {
      Product product=   productRepository.findByProductId(productId).orElseThrow(()->new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
         productRepository.deleteById(productId);

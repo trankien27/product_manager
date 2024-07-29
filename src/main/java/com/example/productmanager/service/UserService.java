@@ -47,17 +47,30 @@ public class UserService {
         user.setRoles(roles);
         return userMapper.toUserResponse(userRepository.save(user));
     }
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
+    public UserResponse getMyInfo(){
+            var context = SecurityContextHolder.getContext();
+            String name = context.getAuthentication().getName();
+            log.info(name);
+            return userMapper.toUserResponse(userRepository.findByUsername(name).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND)));
+    }
+
+
     public UserResponse updateUser(String userId,UserUpdateRequest request) {
+
         User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
         userMapper.updateUser(user,request);
 
        return userMapper.toUserResponse(userRepository.save(user));
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteUser(String userId) {
         if(!userRepository.existsById(userId))
             throw new AppException(ErrorCode.USER_NOT_FOUND);

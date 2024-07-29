@@ -17,7 +17,7 @@ public enum ErrorCode {
     UNAUTHOZIED(1009,"you don't have permission",HttpStatus.FORBIDDEN),
     PRODUCT_EXISTED(1010,"Product already existed",HttpStatus.BAD_REQUEST),
     PRODUCT_NOT_EXISTED(1011,"Product not existed",HttpStatus.NOT_FOUND),
-
+    INVALID_DOB(1012,"Year age atleast {min}",HttpStatus.BAD_REQUEST),
     ;
     private int code;
     private String message;

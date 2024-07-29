@@ -4,8 +4,10 @@ import com.example.productmanager.dto.request.ProductCreationRequest;
 import com.example.productmanager.dto.request.ProductUpdateRequest;
 import com.example.productmanager.dto.response.ApiResponse;
 import com.example.productmanager.dto.response.ProductResponse;
+import com.example.productmanager.repository.ProductRepository;
 import com.example.productmanager.service.ProductService;
 
+import com.example.productmanager.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +22,8 @@ import java.util.List;
 
 public class ProductController {
     ProductService productService;
+    ProductRepository productRepository;
+    private final UserService userService;
 
 
     @PostMapping

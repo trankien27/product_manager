@@ -2,6 +2,7 @@ package com.example.productmanager.configuration;
 
 import com.example.productmanager.Enums.Role;
 import com.example.productmanager.entity.User;
+import com.example.productmanager.repository.RoleRepository;
 import com.example.productmanager.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +21,17 @@ import java.util.HashSet;
 @Slf4j
 public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    RoleRepository roleRepository;
     @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository) {
+    ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
             if(userRepository.findByUsername("admin").isEmpty()){
-                var roles = new HashSet<String>();
-                roles.add(Role.ADMIN.name());
+                var roles = roleRepository.findByName("A    DMIN");
+
                 User user = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
-//                               .roles(roles)
+                        .roles(roles)
                         .build();
                 userRepository.save(user);
                 log.warn("admin user has been generate with password admin");

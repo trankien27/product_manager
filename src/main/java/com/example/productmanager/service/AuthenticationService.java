@@ -7,6 +7,7 @@ import com.example.productmanager.dto.response.IntrospectResponse;
 import com.example.productmanager.entity.User;
 import com.example.productmanager.exception.AppException;
 import com.example.productmanager.exception.ErrorCode;
+import com.example.productmanager.repository.RoleRepository;
 import com.example.productmanager.repository.UserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -19,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ import java.util.StringJoiner;
 public class AuthenticationService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
     @NonFinal
     @Value("${spring.jwt.signerKey}")
     private String SIGNER_KEY;
@@ -57,12 +60,16 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+
         var user = userRepository.findByUsername(authenticationRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
         if (!authenticated)
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         var token = generateToken(user);
+        var info = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(info);
+
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(authenticated)
@@ -94,6 +101,8 @@ public class AuthenticationService {
 
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
+
+
         if (!CollectionUtils.isEmpty(user.getRoles())) ;
         user.getRoles().forEach(role -> {
             stringJoiner.add("ROLE_" + role.getName());

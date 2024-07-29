@@ -1,6 +1,7 @@
 package com.example.productmanager.dto.request;
 
 import com.example.productmanager.entity.Role;
+import com.example.productmanager.validator.DobConstraint;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Size;
@@ -24,6 +25,7 @@ public class UserCreationRequest {
     String lastname;
     String email;
 //    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @DobConstraint(min = 17,message = "INVALID_DOB")
     LocalDate dob;
 
     @ManyToMany
