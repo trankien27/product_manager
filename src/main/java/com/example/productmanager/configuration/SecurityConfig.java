@@ -30,22 +30,22 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityConfig {
 
-    private final String [] PUBLIC_ENDPOINTS ={
+    private final String[] PUBLIC_ENDPOINTS = {
             "/users",
             "/auth/token",
             "/auth/introspect",
             "/auth/logout",
+            "/auth/refresh"
     };
-//    @Value("${spring.jwt.signerKey}")
-//    private String signerKey;
-@Autowired
-private CustomJwtDecoder customJwtDecoder;
+
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
 
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http, HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST,PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET,"/products").permitAll()
+                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder).jwtAuthenticationConverter(jwtAuthenticationConverter()))
@@ -55,8 +55,9 @@ private CustomJwtDecoder customJwtDecoder;
 
         return httpSecurity.build();
     }
+
     @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter(){
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
 
@@ -78,7 +79,7 @@ private CustomJwtDecoder customJwtDecoder;
 //    }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 }
