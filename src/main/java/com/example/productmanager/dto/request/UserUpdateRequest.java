@@ -1,5 +1,6 @@
 package com.example.productmanager.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +18,7 @@ public class UserUpdateRequest {
      String password;
      String lastname;
      String email;
+
      LocalDate dob;
 
 

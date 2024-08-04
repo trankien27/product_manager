@@ -1,6 +1,7 @@
 package com.example.productmanager.dto.response;
 
 import com.example.productmanager.entity.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

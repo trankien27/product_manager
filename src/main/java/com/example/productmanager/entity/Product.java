@@ -22,6 +22,7 @@ public class Product {
     String productId;
     String productName;
     String productDescription;
+    String productImage;
     int productQuantity;
     BigDecimal productPrice;
 
