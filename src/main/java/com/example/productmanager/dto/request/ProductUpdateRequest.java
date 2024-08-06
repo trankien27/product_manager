@@ -15,5 +15,5 @@ public class ProductUpdateRequest {
     String productDescription;
     String productImage;
     int productQuantity;
-    BigDecimal productPrice;
+    long productPrice;
 }

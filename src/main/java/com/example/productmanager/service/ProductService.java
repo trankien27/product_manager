@@ -7,33 +7,35 @@ import com.example.productmanager.entity.Product;
 import com.example.productmanager.exception.AppException;
 import com.example.productmanager.exception.ErrorCode;
 import com.example.productmanager.mapper.ProductMapper;
-import com.example.productmanager.mapper.ProductMapperImpl;
+
 import com.example.productmanager.repository.ProductRepository;
 import com.example.productmanager.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductService {
     ProductRepository productRepository;
     ProductMapper productMapper;
-    private final ProductMapperImpl productMapperImpl;
-    @PreAuthorize("hasRole('ADMIN')")
+//    private final ProductMapperImpl productMapperImpl;
+//    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsProductByProductName(request.getProductName()))
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
 
 
         Product product = productMapper.toProduct(request);
+        log.info(product.toString());
         return productMapper.toProductResponse(productRepository.save(product));
 
     }

@@ -24,7 +24,7 @@ public class Product {
     String productDescription;
     String productImage;
     int productQuantity;
-    BigDecimal productPrice;
+    long productPrice;
 
 
 

@@ -14,5 +14,5 @@ public class ProductResponse {
     String productDescription;
     String productImage;
     int productQuantity;
-    String productPrice;
+    long productPrice;
 }

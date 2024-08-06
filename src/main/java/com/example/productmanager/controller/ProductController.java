@@ -11,15 +11,17 @@ import com.example.productmanager.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-
+@CrossOrigin("http://localhost:3000")
 public class ProductController {
     ProductService productService;
     ProductRepository productRepository;
@@ -28,10 +30,13 @@ public class ProductController {
 
     @PostMapping
     ApiResponse<ProductResponse> createProduct(@RequestBody ProductCreationRequest request) {
+        log.info(request.toString());
         return ApiResponse.<ProductResponse>builder()
+
                 .result(productService.createProduct(request))
                 .build();
     }
+
     @GetMapping
     ApiResponse<List<ProductResponse>> getAllProducts() {
         return ApiResponse.<List<ProductResponse>>builder()
@@ -40,9 +45,10 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
- ProductResponse updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable String productId) {
+    ProductResponse updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable String productId) {
         return productService.updateProduct(request, productId);
     }
+
     @DeleteMapping("{productId}")
     String deleteProduct(@PathVariable String productId) {
         return productService.deleteProduct(productId);
