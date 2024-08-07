@@ -59,7 +59,11 @@ public class UserService {
             return userMapper.toUserResponse(userRepository.findByUsername(name).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
+public boolean checkExistedUser(String username) {
 
+        return userRepository.existsByUsername(username);
+
+}
     public UserResponse updateUser(String userId,UserUpdateRequest request) {
 
         User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));

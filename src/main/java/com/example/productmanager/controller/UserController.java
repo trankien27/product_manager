@@ -1,6 +1,7 @@
 package com.example.productmanager.controller;
 
 import com.example.productmanager.entity.User;
+import com.example.productmanager.exception.AppException;
 import com.example.productmanager.repository.UserRepository;
 import com.example.productmanager.service.UserService;
 import com.example.productmanager.dto.response.ApiResponse;
@@ -22,11 +23,13 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin("http://localhost:3000")
 public class UserController {
     UserService userService;
 
     @PostMapping
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
+
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request))
                 .build();
@@ -37,6 +40,15 @@ public class UserController {
     ApiResponse<List<UserResponse>> getUsers() {
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUsers())
+                .build();
+    }
+
+
+@GetMapping("/{username}")
+ApiResponse<Boolean> checkExistUser(@PathVariable String username) {
+        log.info("Check exist user: {}", username);
+        return ApiResponse.<Boolean>builder()
+                .result(userService.checkExistedUser(username))
                 .build();
     }
 

@@ -26,7 +26,7 @@ public class ApplicationInitConfig {
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
             if(userRepository.findByUsername("admin").isEmpty()){
-                var roles = roleRepository.findByName("A    DMIN");
+                var roles = roleRepository.findByName("ADMIN");
 
                 User user = User.builder()
                         .username("admin")

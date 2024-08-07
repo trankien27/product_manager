@@ -32,11 +32,13 @@ public class SecurityConfig {
             "/auth/token",
             "/auth/introspect",
             "/auth/logout",
-            "/auth/refresh",
-            "/products"
-
+            "/auth/refresh"
     };
+private final String[] PUBLIC_GET_ENDPOINTS = {
+        "products",
+        "users/{username}"
 
+};
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
 
@@ -44,7 +46,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINTS).permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder).jwtAuthenticationConverter(jwtAuthenticationConverter()))
