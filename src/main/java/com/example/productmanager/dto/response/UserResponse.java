@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Data
@@ -24,4 +27,9 @@ public class UserResponse {
      @ManyToMany
      Set<Role> roles ;
 
+     @JsonFormat(pattern="dd-MM-yyyy")
+     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+     public LocalDate getDob() {
+          return dob;
+     }
 }
