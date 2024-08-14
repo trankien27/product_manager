@@ -40,8 +40,6 @@ public class ProductController {
     }
     @GetMapping
     ApiResponse<List<ProductResponse>> getAllProducts(
-//            @PathVariable int pageNo ,
-//            @PathVariable int pageSize
             @RequestParam(defaultValue = "1") int pageNo,
             @RequestParam(defaultValue = "5") int pageSize
     ) {

@@ -49,9 +49,9 @@ public class ProductService {
         return productMapper.toProductResponse(productRepository.save(product));
     }
 
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
-    }
+//    public List<ProductResponse> getAllProducts() {
+//        return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
+//    }
 
     public Page<ProductResponse> getAllByPage(final Pageable pageable) {
         final Page<Product> page = productRepository.findAll(pageable);

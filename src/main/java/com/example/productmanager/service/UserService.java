@@ -3,7 +3,9 @@ package com.example.productmanager.service;
 
 import com.example.productmanager.dto.request.UserCreationRequest;
 import com.example.productmanager.dto.request.UserUpdateRequest;
+import com.example.productmanager.dto.response.ProductResponse;
 import com.example.productmanager.dto.response.UserResponse;
+import com.example.productmanager.entity.Product;
 import com.example.productmanager.entity.Role;
 import com.example.productmanager.entity.User;
 import com.example.productmanager.exception.AppException;
@@ -16,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +55,12 @@ public class UserService {
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
+    }
+    public Page<UserResponse> getAllByPage(final Pageable pageable) {
+
+        final Page<User> page = userRepository.findAll(pageable);
+
+        return page.map(userMapper::toUserResponse);
     }
     public UserResponse getMyInfo(){
             var context = SecurityContextHolder.getContext();
