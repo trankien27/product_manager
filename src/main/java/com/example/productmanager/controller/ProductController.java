@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,11 +38,17 @@ public class ProductController {
                 .result(productService.createProduct(request))
                 .build();
     }
-
     @GetMapping
-    ApiResponse<List<ProductResponse>> getAllProducts() {
+    ApiResponse<List<ProductResponse>> getAllProducts(
+//            @PathVariable int pageNo ,
+//            @PathVariable int pageSize
+            @RequestParam(defaultValue = "1") int pageNo,
+            @RequestParam(defaultValue = "5") int pageSize
+    ) {
+        Pageable pageable =PageRequest.of(pageNo, pageSize);
         return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getAllProducts())
+                .result(productService.getAllByPage(pageable).stream().toList())
+//                .result(productService.getAllProducts())
                 .build();
     }
 

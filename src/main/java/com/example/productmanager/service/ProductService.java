@@ -14,6 +14,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +30,8 @@ import java.util.List;
 public class ProductService {
     ProductRepository productRepository;
     ProductMapper productMapper;
-//    private final ProductMapperImpl productMapperImpl;
-//    @PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsProductByProductName(request.getProductName()))
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
@@ -49,6 +52,14 @@ public class ProductService {
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
     }
+
+    public Page<ProductResponse> getAllByPage(final Pageable pageable) {
+        final Page<Product> page = productRepository.findAll(pageable);
+
+      return page.map(productMapper::toProductResponse);
+    }
+
+
     public ProductResponse getProduct(String productId) {
         return productMapper.toProductResponse(productRepository.findByProductId(productId).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)));
     }
