@@ -1,7 +1,10 @@
 package com.example.productmanager.dto.response;
 
+import com.example.productmanager.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -11,4 +14,5 @@ import lombok.experimental.FieldDefaults;
 public class AuthenticationResponse {
     String token;
     boolean authenticated;
+    Set<Role> role;
 }

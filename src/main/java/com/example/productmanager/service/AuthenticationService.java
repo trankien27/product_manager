@@ -65,8 +65,6 @@ public class AuthenticationService {
         }catch (AppException e){
              isValid = false;
         }
-
-
         return IntrospectResponse.builder()
                 .valid(isValid)
                 .build();
@@ -135,7 +133,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
         if (!authenticated)
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.USERNAME_OR_PASSWORD_WRONG);
         var token = generateToken(user);
         var info = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info(info);
@@ -143,6 +141,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(authenticated)
+                .role(user.getRoles())
                 .build();
     }
 

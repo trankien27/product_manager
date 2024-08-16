@@ -31,8 +31,6 @@ public class AuthenticationController {
     @PostMapping("/token")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         log.info(request.getPassword());
-//if(request==null)
-//    throw new AppException(ErrorCode.USERNAME_OR_PASSWORD_NULL);
         var result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)

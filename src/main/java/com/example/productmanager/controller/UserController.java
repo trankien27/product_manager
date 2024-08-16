@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping
     ApiResponse<List<UserResponse>> getUsers(
             @RequestParam(defaultValue = "1") int pageNo,
-            @RequestParam(defaultValue = "5") int pageSize
+            @RequestParam(defaultValue = "15") int pageSize
     ) {
         Pageable page = PageRequest.of(pageNo, pageSize);
         return ApiResponse.<List<UserResponse>>builder()
