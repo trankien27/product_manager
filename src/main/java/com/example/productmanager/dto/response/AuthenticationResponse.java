@@ -1,6 +1,7 @@
 package com.example.productmanager.dto.response;
 
 import com.example.productmanager.entity.Role;
+import com.example.productmanager.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,5 +15,5 @@ import java.util.Set;
 public class AuthenticationResponse {
     String token;
     boolean authenticated;
-    Set<Role> role;
+    User user;
 }

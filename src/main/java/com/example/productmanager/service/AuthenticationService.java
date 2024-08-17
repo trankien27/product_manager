@@ -141,7 +141,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(authenticated)
-                .role(user.getRoles())
+                .user(user)
                 .build();
     }
 
