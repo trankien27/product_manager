@@ -45,6 +45,7 @@ public class ProductController {
     ) {
         Pageable pageable =PageRequest.of(pageNo, pageSize);
         return ApiResponse.<List<ProductResponse>>builder()
+                .quantity(productService.getAllProducts().toArray().length)
                 .result(productService.getAllByPage(pageable).stream().toList())
 //                .result(productService.getAllProducts())
                 .build();

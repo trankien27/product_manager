@@ -17,6 +17,7 @@ public class ApiResponse<T> {
 
     @Builder.Default
     int code = 1000;
+    int quantity;
     String message;
     T result;
 

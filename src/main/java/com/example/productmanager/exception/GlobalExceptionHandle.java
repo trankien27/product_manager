@@ -18,13 +18,13 @@ import java.util.Objects;
 @ControllerAdvice
 public class GlobalExceptionHandle {
     private static final String MIN_ATTRIBUTE = "min";
-//    @ExceptionHandler(value = Exception.class)
-//    ResponseEntity<ApiResponse> handlingRunTimeException(RuntimeException exception){
-//        ApiResponse apiResponse = new ApiResponse();
-//        apiResponse.setCode(ErrorCode.UNCATEGORIZED.getCode());
-//        apiResponse.setMessage(ErrorCode.UNCATEGORIZED.getMessage());
-//        return ResponseEntity.badRequest().body(apiResponse);
-//    }
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse> handlingRunTimeException(RuntimeException exception){
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED.getCode());
+        apiResponse.setMessage(ErrorCode.UNCATEGORIZED.getMessage());
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(AppException exception){
         ErrorCode errorCode = exception.getErrorCode();

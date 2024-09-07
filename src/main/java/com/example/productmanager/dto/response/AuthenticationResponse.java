@@ -15,5 +15,7 @@ import java.util.Set;
 public class AuthenticationResponse {
     String token;
     boolean authenticated;
-    User user;
+
+String username;
+Set<Role> roles;
 }

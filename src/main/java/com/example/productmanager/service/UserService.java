@@ -27,6 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -41,15 +42,20 @@ public class UserService {
     RoleRepository roleRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
-        if (userRepository.existsByUsername(request.getUsername()))
-            throw new AppException(ErrorCode.USER_EXISTED);
+//        if (userRepository.existsByUsername(request.getUsername()))
+//            throw new AppException(ErrorCode.USER_EXISTED);
 
         User user = userMapper.toUser(request);
         HashSet<Role> roles = new HashSet<>();
         roleRepository.findById("USER").ifPresent(roles::add);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(roles);
-        return userMapper.toUserResponse(userRepository.save(user));
+try{
+    user = userRepository.save(user);
+}catch (Exception e){
+throw new AppException(ErrorCode.USER_EXISTED);
+}
+        return userMapper.toUserResponse(user);
     }
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
@@ -74,14 +80,17 @@ public boolean checkExistedUser(String username) {
         return userRepository.existsByUsername(username);
 
 }
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse updateUser(String userId,UserUpdateRequest request) {
 
+
         User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        log.info(request.getPassword());
+
+  userMapper.updateUser(user,request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        userMapper.updateUser(user,request);
-
-       return userMapper.toUserResponse(userRepository.save(user));
+        UserResponse userResponse = userMapper.toUserResponse(userRepository.save(user));
+       return userResponse;
 
     }
     @PreAuthorize("hasRole('ADMIN')")
