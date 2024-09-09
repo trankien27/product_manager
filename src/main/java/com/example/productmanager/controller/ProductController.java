@@ -41,7 +41,7 @@ public class ProductController {
     @GetMapping
     ApiResponse<List<ProductResponse>> getAllProducts(
             @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "5") int pageSize
+            @RequestParam(defaultValue = "100000000") int pageSize
     ) {
         Pageable pageable =PageRequest.of(pageNo, pageSize);
         return ApiResponse.<List<ProductResponse>>builder()
