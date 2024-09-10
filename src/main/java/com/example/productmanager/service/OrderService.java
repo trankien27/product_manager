@@ -29,6 +29,13 @@ public Orders createOrder(OrderRequest request){
             .productQuantity(request.getQuantityProduct())
             .productName(request.getProductName())
             .username(name)
+            .note(request.getNote())
+            .district(request.getDistrict())
+            .fullname(request.getFullname())
+            .numberPhone(request.getNumberPhone())
+            .payment(request.getPayment())
+            .email(request.getEmail())
+            .province(request.getProvince())
             .build();
             return orderRepository.save(orders);
 

@@ -11,4 +11,11 @@ import lombok.experimental.FieldDefaults;
 public class OrderRequest {
     String productName;
     int quantityProduct;
+    String fullname;
+    String numberPhone;
+    String payment;
+    String province;
+    String district;
+    String note;
+    String email;
 }

@@ -18,4 +18,11 @@ public class Orders {
     String username;
     String productName;
     int productQuantity;
+    String fullname;
+    String email;
+    String numberPhone;
+    String payment;
+    String province;
+    String district;
+    String note;
 }
